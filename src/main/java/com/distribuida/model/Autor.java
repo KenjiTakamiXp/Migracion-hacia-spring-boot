@@ -22,6 +22,9 @@ public class Autor {
         this.correo = correo;
     }
 
+    public Autor(int i, String diego, String go) {
+    }
+
     public int getIdAutor() {
         return idAutor;
     }

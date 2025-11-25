@@ -55,14 +55,16 @@ public class ClienteTestUnitaria {
     @Test
     public void testClientetoString(){
         String str = cliente.toString();
-        assertAll("Validar datos cliente - to String"
+        assertAll("Validar datos cliente - to String",
                 () -> assertTrue(str.contains("1")),
                 () -> assertTrue(str.contains("1722702790")),
                 () -> assertTrue(str.contains("Juan")),
                 () -> assertTrue(str.contains("Sanchez")),
-                () -> assertTrue(str.contains("Casa de Alguien")),
+                () -> assertTrue(str.contains("Casa de alguien")),
                 () -> assertTrue(str.contains("0999040636")),
                 () -> assertTrue(str.contains("correo@correo.com"))
         );
     }
+
+
 }
