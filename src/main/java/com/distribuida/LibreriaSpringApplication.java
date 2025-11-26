@@ -1,4 +1,4 @@
-package com.distribuida.libreria_spring;
+package com.distribuida;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LibreriaSpringApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LibreriaSpringApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LibreriaSpringApplication.class, args);
+    }
 
 }
