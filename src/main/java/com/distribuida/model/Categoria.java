@@ -1,11 +1,24 @@
 package com.distribuida.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "categoria")
 public class Categoria {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_categoria")
     private int idCategoria;
+
+    @Column(name = "categoria")
     private String categoria;
+
+    @Column(name = "descripcion")
     private String descripcion;
 
-    public Categoria(){}
+    public Categoria() {
+    }
 
     public Categoria(int idCategoria, String categoria, String descripcion) {
         this.idCategoria = idCategoria;
@@ -13,12 +26,12 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public int getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
     public String getCategoria() {
@@ -29,12 +42,12 @@ public class Categoria {
         this.categoria = categoria;
     }
 
-    public int getIdCategoria() {
-        return idCategoria;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override

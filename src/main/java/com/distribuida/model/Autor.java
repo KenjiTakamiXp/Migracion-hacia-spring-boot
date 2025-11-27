@@ -1,18 +1,39 @@
 package com.distribuida.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "autor")
 public class Autor {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_autor")
     private int idAutor;
+
+    @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "apellido")
     private String apellido;
+
+    @Column(name = "pais")
     private String pais;
+
+    @Column(name = "direccion")
     private String direccion;
+
+    @Column(name = "telefono")
     private String telefono;
+
+    @Column(name = "correo")
     private String correo;
 
-    public Autor(){}
+    public Autor() {
+    }
 
-    public Autor(int idAutor, String nombre, String apellido, String pais, String direccion, String telefono, String correo) {
+    public Autor(int idAutor, String nombre, String apellido, String pais, String direccion,
+                 String telefono, String correo) {
         this.idAutor = idAutor;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -20,9 +41,6 @@ public class Autor {
         this.direccion = direccion;
         this.telefono = telefono;
         this.correo = correo;
-    }
-
-    public Autor(int i, String diego, String go) {
     }
 
     public int getIdAutor() {

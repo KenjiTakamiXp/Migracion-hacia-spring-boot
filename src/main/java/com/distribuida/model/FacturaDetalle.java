@@ -1,16 +1,35 @@
 package com.distribuida.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "factura_detalle")
 public class FacturaDetalle {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_factura_detalle")
     private int idFacturaDetalle;
+
+    @Column(name = "cantidad")
     private int cantidad;
+
+    @Column(name = "subtotal")
     private Double subtotal;
 
+    @ManyToOne
+    @JoinColumn(name = "id_factura")
     private Factura factura;
+
+    @ManyToOne
+    @JoinColumn(name = "id_libro")
     private Libro libro;
 
-    public FacturaDetalle(){}
+    public FacturaDetalle() {
+    }
 
-    public FacturaDetalle(int idFacturaDetalle, int cantidad, Double subtotal, Factura factura, Libro libro) {
+    public FacturaDetalle(int idFacturaDetalle, int cantidad, Double subtotal,
+                          Factura factura, Libro libro) {
         this.idFacturaDetalle = idFacturaDetalle;
         this.cantidad = cantidad;
         this.subtotal = subtotal;
@@ -18,28 +37,12 @@ public class FacturaDetalle {
         this.libro = libro;
     }
 
-    public Libro getLibro() {
-        return libro;
+    public int getIdFacturaDetalle() {
+        return idFacturaDetalle;
     }
 
-    public void setLibro(Libro libro) {
-        this.libro = libro;
-    }
-
-    public Factura getFactura() {
-        return factura;
-    }
-
-    public void setFactura(Factura factura) {
-        this.factura = factura;
-    }
-
-    public Double getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(Double subtotal) {
-        this.subtotal = subtotal;
+    public void setIdFacturaDetalle(int idFacturaDetalle) {
+        this.idFacturaDetalle = idFacturaDetalle;
     }
 
     public int getCantidad() {
@@ -50,12 +53,28 @@ public class FacturaDetalle {
         this.cantidad = cantidad;
     }
 
-    public int getIdFacturaDetalle() {
-        return idFacturaDetalle;
+    public Double getSubtotal() {
+        return subtotal;
     }
 
-    public void setIdFacturaDetalle(int idFacturaDetalle) {
-        this.idFacturaDetalle = idFacturaDetalle;
+    public void setSubtotal(Double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
+    }
+
+    public Libro getLibro() {
+        return libro;
+    }
+
+    public void setLibro(Libro libro) {
+        this.libro = libro;
     }
 
     @Override
