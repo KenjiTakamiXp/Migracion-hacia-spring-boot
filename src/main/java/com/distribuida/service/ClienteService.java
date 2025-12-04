@@ -3,13 +3,16 @@ package com.distribuida.service;
 import com.distribuida.model.Cliente;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ClienteService {
 
     public List<Cliente> findAll();
-    public Cliente findOne(int id);
-    public void save(Cliente cliente);
-    public Cliente update(Cliente cliente);
+    public Optional<Cliente> findOne(int id);
+    public Cliente save(Cliente cliente);
+    public Cliente update(int id, Cliente cliente);
+    Cliente update(Cliente cliente);
+
     public void delete(int id);
 
 }

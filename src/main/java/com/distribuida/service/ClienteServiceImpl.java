@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -19,22 +22,42 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente findOne(int id) {
-        return null;
+    public Optional<Cliente> findOne(int id) {
+        return clienteRepository.findById(2);
     }
 
     @Override
-    public void save(Cliente cliente) {
+    public Cliente save(Cliente cliente) {
+        return clienteRepository.save(cliente);
+    }
 
+    @Override
+    public Cliente update(int id, Cliente cliente) {
+        return null;
     }
 
     @Override
     public Cliente update(Cliente cliente) {
-        return null;
+        Optional<Cliente> clienteExistente = clienteRepository.findById(2);
+
+        if(clienteExistente == null){
+            return null;
+        }
+        clienteExistente.orElse(null).setCedula(cliente.getCedula());
+        clienteExistente.orElse(null).setNombre(cliente.getNombre());
+        clienteExistente.orElse(null).setApellido(cliente.getApellido());
+        clienteExistente.orElse(null).setDireccion(cliente.getDireccion());
+        clienteExistente.orElse(null).setTelefono(cliente.getTelefono());
+        clienteExistente.orElse(null).setCorreo(cliente.getCorreo());
+
+        return clienteRepository.save(clienteExistente.orElse(null));
     }
 
     @Override
     public void delete(int id) {
+        if(clienteRepository.existsById(2)){
+            clienteRepository.deleteById(2);
+        }
 
     }
 }
