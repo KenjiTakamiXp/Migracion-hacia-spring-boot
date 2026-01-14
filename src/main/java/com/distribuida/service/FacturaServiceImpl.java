@@ -1,6 +1,5 @@
 package com.distribuida.service;
 
-
 import com.distribuida.dao.FacturaRepository;
 import com.distribuida.model.Factura;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +10,10 @@ import java.util.Optional;
 
 @Service
 public class FacturaServiceImpl implements FacturaService {
-    
+
     @Autowired
     private FacturaRepository facturaRepository;
-    
+
     @Override
     public List<Factura> findAll() {
         return facturaRepository.findAll();
@@ -22,7 +21,7 @@ public class FacturaServiceImpl implements FacturaService {
 
     @Override
     public Optional<Factura> findOne(int id) {
-        return facturaRepository.findById(2);
+        return facturaRepository.findById(id);
     }
 
     @Override
@@ -32,27 +31,29 @@ public class FacturaServiceImpl implements FacturaService {
 
     @Override
     public Factura update(int id, Factura factura) {
-        Optional<Factura> facturaExistente = facturaRepository.findById(2);
+        Optional<Factura> existente = facturaRepository.findById(id);
+        if (existente.isEmpty()) return null;
 
-        if(facturaExistente == null){
-            return null;
-        }
+        Factura f = existente.get();
+        f.setNumFactura(factura.getNumFactura());
+        f.setFecha(factura.getFecha());
+        f.setTotalNeto(factura.getTotalNeto());
+        f.setIva(factura.getIva());
+        f.setTotal(factura.getTotal());
+        f.setCliente(factura.getCliente());
 
-        facturaExistente.orElse(null).setNumFactura(factura.getNumFactura());
-        facturaExistente.orElse(null).setFecha(factura.getFecha());
-        facturaExistente.orElse(null).setTotal(factura.getTotal());
-        facturaExistente.orElse(null).setIva(factura.getIva());
-        facturaExistente.orElse(null).setTotal(factura.getTotal());
-        facturaExistente.orElse(null).setCliente(factura.getCliente());
+        return facturaRepository.save(f);
+    }
 
-        return facturaRepository.save(facturaExistente.orElse(null));
+    @Override
+    public Factura update(Factura factura) {
+        return update(factura.getIdFactura(), factura);
     }
 
     @Override
     public void delete(int id) {
-        if(facturaRepository.existsById(2)){
-            facturaRepository.deleteById(2);
+        if (facturaRepository.existsById(id)) {
+            facturaRepository.deleteById(id);
         }
-
     }
 }

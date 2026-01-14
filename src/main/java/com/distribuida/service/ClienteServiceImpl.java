@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
@@ -18,49 +16,44 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public List<Cliente> findAll() {
-
         return clienteRepository.findAll();
     }
 
     @Override
     public Optional<Cliente> findOne(int id) {
-
-        return clienteRepository.findById(2);
+        return clienteRepository.findById(id);
     }
 
     @Override
     public Cliente save(Cliente cliente) {
-
         return clienteRepository.save(cliente);
     }
 
     @Override
     public Cliente update(int id, Cliente cliente) {
-        return null;
+        Optional<Cliente> existente = clienteRepository.findById(id);
+        if (existente.isEmpty()) return null;
+
+        Cliente c = existente.get();
+        c.setCedula(cliente.getCedula());
+        c.setNombre(cliente.getNombre());
+        c.setApellido(cliente.getApellido());
+        c.setDireccion(cliente.getDireccion());
+        c.setTelefono(cliente.getTelefono());
+        c.setCorreo(cliente.getCorreo());
+
+        return clienteRepository.save(c);
     }
 
     @Override
     public Cliente update(Cliente cliente) {
-        Optional<Cliente> clienteExistente = clienteRepository.findById(2);
-
-        if(clienteExistente == null){
-            return null;
-        }
-        clienteExistente.orElse(null).setCedula(cliente.getCedula());
-        clienteExistente.orElse(null).setNombre(cliente.getNombre());
-        clienteExistente.orElse(null).setApellido(cliente.getApellido());
-        clienteExistente.orElse(null).setDireccion(cliente.getDireccion());
-        clienteExistente.orElse(null).setTelefono(cliente.getTelefono());
-        clienteExistente.orElse(null).setCorreo(cliente.getCorreo());
-
-        return clienteRepository.save(clienteExistente.orElse(null));
+        return update(cliente.getIdCliente(), cliente);
     }
 
     @Override
     public void delete(int id) {
-        if(clienteRepository.existsById(2)){
-            clienteRepository.deleteById(2);
+        if (clienteRepository.existsById(id)) {
+            clienteRepository.deleteById(id);
         }
-
     }
 }

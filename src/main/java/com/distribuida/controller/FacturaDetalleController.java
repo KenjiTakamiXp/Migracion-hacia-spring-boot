@@ -18,25 +18,24 @@ public class FacturaDetalleController {
 
     @GetMapping
     public ResponseEntity<List<FacturaDetalle>> findAll() {
-        List<FacturaDetalle> items = facturaDetalleService.findAll();
-        return ResponseEntity.ok(items);
+        return ResponseEntity.ok(facturaDetalleService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FacturaDetalle> findOne(@PathVariable int id) {
-        Optional<FacturaDetalle> item = facturaDetalleService.findOne(id);
-        return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<FacturaDetalle> detalle = facturaDetalleService.findOne(id);
+        return detalle.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<FacturaDetalle> save(@RequestBody FacturaDetalle item) {
-        FacturaDetalle nuevo = facturaDetalleService.save(item);
-        return ResponseEntity.ok(nuevo);
+    public ResponseEntity<FacturaDetalle> save(@RequestBody FacturaDetalle detalle) {
+        return ResponseEntity.ok(facturaDetalleService.save(detalle));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FacturaDetalle> update(@PathVariable int id, @RequestBody FacturaDetalle item) {
-        FacturaDetalle actualizado = facturaDetalleService.update(id, item);
+    public ResponseEntity<FacturaDetalle> update(@PathVariable int id, @RequestBody FacturaDetalle detalle) {
+        FacturaDetalle actualizado = facturaDetalleService.update(id, detalle);
         if (actualizado == null) {
             return ResponseEntity.notFound().build();
         }

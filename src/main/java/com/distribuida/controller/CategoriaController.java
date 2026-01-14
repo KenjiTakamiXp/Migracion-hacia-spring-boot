@@ -18,25 +18,24 @@ public class CategoriaController {
 
     @GetMapping
     public ResponseEntity<List<Categoria>> findAll() {
-        List<Categoria> items = categoriaService.findAll();
-        return ResponseEntity.ok(items);
+        return ResponseEntity.ok(categoriaService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> findOne(@PathVariable int id) {
-        Optional<Categoria> item = categoriaService.findOne(id);
-        return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Categoria> categoria = categoriaService.findOne(id);
+        return categoria.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> save(@RequestBody Categoria item) {
-        Categoria nuevo = categoriaService.save(item);
-        return ResponseEntity.ok(nuevo);
+    public ResponseEntity<Categoria> save(@RequestBody Categoria categoria) {
+        return ResponseEntity.ok(categoriaService.save(categoria));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> update(@PathVariable int id, @RequestBody Categoria item) {
-        Categoria actualizado = categoriaService.update(id, item);
+    public ResponseEntity<Categoria> update(@PathVariable int id, @RequestBody Categoria categoria) {
+        Categoria actualizado = categoriaService.update(id, categoria);
         if (actualizado == null) {
             return ResponseEntity.notFound().build();
         }

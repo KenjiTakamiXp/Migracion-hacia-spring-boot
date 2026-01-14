@@ -13,49 +13,39 @@ import java.util.Optional;
 @RequestMapping("/api/clientes")
 public class ClienteController {
 
-
     @Autowired
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> findAll(){
-        List<Cliente> clientes = clienteService.findAll();
-        return ResponseEntity.ok(clientes);
+    public ResponseEntity<List<Cliente>> findAll() {
+        return ResponseEntity.ok(clienteService.findAll());
     }
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> findOne(@PathVariable int id){
+    public ResponseEntity<Cliente> findOne(@PathVariable int id) {
         Optional<Cliente> cliente = clienteService.findOne(id);
-        if(cliente == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(cliente.orElse(null));
+        return cliente.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> save(@RequestBody Cliente cliente){
-        Cliente clienteNuevo = clienteService.save(cliente);
-
-        return ResponseEntity.ok(clienteNuevo);
+    public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
+        return ResponseEntity.ok(clienteService.save(cliente));
     }
 
-    @PutMapping
-    public ResponseEntity<Cliente> update(@PathVariable int id, @RequestBody Cliente cliente){
-        Cliente clienteActualizar = clienteService.update(id, cliente);
-        if(clienteActualizar == null){
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> update(@PathVariable int id, @RequestBody Cliente cliente) {
+        Cliente actualizado = clienteService.update(id, cliente);
+        if (actualizado == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(clienteActualizar);
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id){
+    public ResponseEntity<Void> delete(@PathVariable int id) {
         clienteService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
 }

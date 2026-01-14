@@ -14,6 +14,9 @@ public interface FacturaService {
     public Optional<Factura> findOne(int id);
     public Factura save(Factura factura);
     public Factura update(int id, Factura factura);
+
+    Factura update(Factura factura);
+
     public void delete(int id);
 
 }

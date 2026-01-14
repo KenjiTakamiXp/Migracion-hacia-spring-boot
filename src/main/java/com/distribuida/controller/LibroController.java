@@ -18,25 +18,24 @@ public class LibroController {
 
     @GetMapping
     public ResponseEntity<List<Libro>> findAll() {
-        List<Libro> items = libroService.findAll();
-        return ResponseEntity.ok(items);
+        return ResponseEntity.ok(libroService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Libro> findOne(@PathVariable int id) {
-        Optional<Libro> item = libroService.findOne(id);
-        return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Libro> libro = libroService.findOne(id);
+        return libro.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Libro> save(@RequestBody Libro item) {
-        Libro nuevo = libroService.save(item);
-        return ResponseEntity.ok(nuevo);
+    public ResponseEntity<Libro> save(@RequestBody Libro libro) {
+        return ResponseEntity.ok(libroService.save(libro));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Libro> update(@PathVariable int id, @RequestBody Libro item) {
-        Libro actualizado = libroService.update(id, item);
+    public ResponseEntity<Libro> update(@PathVariable int id, @RequestBody Libro libro) {
+        Libro actualizado = libroService.update(id, libro);
         if (actualizado == null) {
             return ResponseEntity.notFound().build();
         }

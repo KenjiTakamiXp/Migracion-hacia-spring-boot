@@ -21,7 +21,7 @@ public class LibroServiceImpl implements LibroService {
 
     @Override
     public Optional<Libro> findOne(int id) {
-        return libroRepository.findById(2);
+        return libroRepository.findById(id);
     }
 
     @Override
@@ -31,40 +31,37 @@ public class LibroServiceImpl implements LibroService {
 
     @Override
     public Libro update(int id, Libro libro) {
-        return null;
+        Optional<Libro> existente = libroRepository.findById(id);
+        if (existente.isEmpty()) return null;
+
+        Libro l = existente.get();
+        l.setTitulo(libro.getTitulo());
+        l.setNumPaginas(libro.getNumPaginas());
+        l.setEdicion(libro.getEdicion());
+        l.setIdioma(libro.getIdioma());
+        l.setFechaPublicacion(libro.getFechaPublicacion());
+        l.setDescripcion(libro.getDescripcion());
+        l.setTipoPasta(libro.getTipoPasta());
+        l.setiSBN(libro.getiSBN());
+        l.setNumEjemplares(libro.getNumEjemplares());
+        l.setPortada(libro.getPortada());
+        l.setPresentacion(libro.getPresentacion());
+        l.setPrecio(libro.getPrecio());
+        l.setCategoria(libro.getCategoria());
+        l.setAutor(libro.getAutor());
+
+        return libroRepository.save(l);
     }
 
     @Override
     public Libro update(Libro libro) {
-
-        Optional<Libro> existente = libroRepository.findById(2);
-
-        if (!existente.isPresent()) {
-            return null;
-        }
-
-        existente.get().setTitulo(libro.getTitulo());
-        existente.get().setNumPaginas(libro.getNumPaginas());
-        existente.get().setEdicion(libro.getEdicion());
-        existente.get().setIdioma(libro.getIdioma());
-        existente.get().setFechaPublicacion(libro.getFechaPublicacion());
-        existente.get().setDescripcion(libro.getDescripcion());
-        existente.get().setTipoPasta(libro.getTipoPasta());
-        existente.get().setiSBN(libro.getiSBN());
-        existente.get().setNumEjemplares(libro.getNumEjemplares());
-        existente.get().setPortada(libro.getPortada());
-        existente.get().setPresentacion(libro.getPresentacion());
-        existente.get().setPrecio(libro.getPrecio());
-        existente.get().setCategoria(libro.getCategoria());
-        existente.get().setAutor(libro.getAutor());
-
-        return libroRepository.save(existente.get());
+        return update(libro.getIdLibro(), libro);
     }
 
     @Override
     public void delete(int id) {
-        if (libroRepository.existsById(2)) {
-            libroRepository.deleteById(2);
+        if (libroRepository.existsById(id)) {
+            libroRepository.deleteById(id);
         }
     }
 }

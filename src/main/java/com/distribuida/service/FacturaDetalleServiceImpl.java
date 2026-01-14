@@ -21,7 +21,7 @@ public class FacturaDetalleServiceImpl implements FacturaDetalleService {
 
     @Override
     public Optional<FacturaDetalle> findOne(int id) {
-        return facturaDetalleRepository.findById(2);
+        return facturaDetalleRepository.findById(id);
     }
 
     @Override
@@ -31,30 +31,27 @@ public class FacturaDetalleServiceImpl implements FacturaDetalleService {
 
     @Override
     public FacturaDetalle update(int id, FacturaDetalle detalle) {
-        return null;
+        Optional<FacturaDetalle> existente = facturaDetalleRepository.findById(id);
+        if (existente.isEmpty()) return null;
+
+        FacturaDetalle d = existente.get();
+        d.setCantidad(detalle.getCantidad());
+        d.setSubtotal(detalle.getSubtotal());
+        d.setFactura(detalle.getFactura());
+        d.setLibro(detalle.getLibro());
+
+        return facturaDetalleRepository.save(d);
     }
 
     @Override
     public FacturaDetalle update(FacturaDetalle detalle) {
-
-        Optional<FacturaDetalle> existente = facturaDetalleRepository.findById(2);
-
-        if (!existente.isPresent()) {
-            return null;
-        }
-
-        existente.get().setCantidad(detalle.getCantidad());
-        existente.get().setSubtotal(detalle.getSubtotal());
-        existente.get().setFactura(detalle.getFactura());
-        existente.get().setLibro(detalle.getLibro());
-
-        return facturaDetalleRepository.save(existente.get());
+        return update(detalle.getIdFacturaDetalle(), detalle);
     }
 
     @Override
     public void delete(int id) {
-        if (facturaDetalleRepository.existsById(2)) {
-            facturaDetalleRepository.deleteById(2);
+        if (facturaDetalleRepository.existsById(id)) {
+            facturaDetalleRepository.deleteById(id);
         }
     }
 }

@@ -18,25 +18,24 @@ public class AutorController {
 
     @GetMapping
     public ResponseEntity<List<Autor>> findAll() {
-        List<Autor> items = autorService.findAll();
-        return ResponseEntity.ok(items);
+        return ResponseEntity.ok(autorService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Autor> findOne(@PathVariable int id) {
-        Optional<Autor> item = autorService.findOne(id);
-        return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Autor> autor = autorService.findOne(id);
+        return autor.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Autor> save(@RequestBody Autor item) {
-        Autor nuevo = autorService.save(item);
-        return ResponseEntity.ok(nuevo);
+    public ResponseEntity<Autor> save(@RequestBody Autor autor) {
+        return ResponseEntity.ok(autorService.save(autor));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Autor> update(@PathVariable int id, @RequestBody Autor item) {
-        Autor actualizado = autorService.update(id, item);
+    public ResponseEntity<Autor> update(@PathVariable int id, @RequestBody Autor autor) {
+        Autor actualizado = autorService.update(id, autor);
         if (actualizado == null) {
             return ResponseEntity.notFound().build();
         }

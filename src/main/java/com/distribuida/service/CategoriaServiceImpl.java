@@ -21,7 +21,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public Optional<Categoria> findOne(int id) {
-        return categoriaRepository.findById(2);
+        return categoriaRepository.findById(id);
     }
 
     @Override
@@ -31,28 +31,25 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public Categoria update(int id, Categoria categoria) {
-        return null;
+        Optional<Categoria> existente = categoriaRepository.findById(id);
+        if (existente.isEmpty()) return null;
+
+        Categoria c = existente.get();
+        c.setCategoria(categoria.getCategoria());
+        c.setDescripcion(categoria.getDescripcion());
+
+        return categoriaRepository.save(c);
     }
 
     @Override
     public Categoria update(Categoria categoria) {
-
-        Optional<Categoria> existente = categoriaRepository.findById(2);
-
-        if (!existente.isPresent()) {
-            return null;
-        }
-
-        existente.get().setCategoria(categoria.getCategoria());
-        existente.get().setDescripcion(categoria.getDescripcion());
-
-        return categoriaRepository.save(existente.get());
+        return update(categoria.getIdCategoria(), categoria);
     }
 
     @Override
     public void delete(int id) {
-        if (categoriaRepository.existsById(2)) {
-            categoriaRepository.deleteById(2);
+        if (categoriaRepository.existsById(id)) {
+            categoriaRepository.deleteById(id);
         }
     }
 }
