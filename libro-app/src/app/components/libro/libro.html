@@ -1,85 +1,154 @@
-<div class="container mt-4">
-  <h1>Libro</h1>
-  <div class="d-flex justify-content-center mb-3">
-      <button mat-raised-button color="primary" (click)="abrirModal()">
-          <mat-icon>add</mat-icon> Agregar Libro
-      </button>
-  </div>
+<div class="container mt-4" #FormularioLibro>
+  <h2>{{ editar ? 'Editar Libro' : 'Agregar Libro' }}</h2>
+
+  <form (ngSubmit)="guardarLibro()" #formLibro="ngForm" novalidate>
+    <div class="row">
+      <div class="col-md-4 mb-2">
+        <input class="form-control" type="text" placeholder="Título" [(ngModel)]="libro.titulo"
+          name="tituloInput" required #tituloModel="ngModel"
+          [ngClass]="{'is-invalid': tituloModel.invalid && tituloModel.touched}">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <input class="form-control" type="text" placeholder="Editorial" [(ngModel)]="libro.editorial"
+          name="editorialInput" required #editorialModel="ngModel"
+          [ngClass]="{'is-invalid': editorialModel.invalid && editorialModel.touched}">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <input class="form-control" type="text" placeholder="Edición" [(ngModel)]="libro.edicion"
+          name="edicionInput" required #edicionModel="ngModel"
+          [ngClass]="{'is-invalid': edicionModel.invalid && edicionModel.touched}">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <input class="form-control" type="text" placeholder="Idioma" [(ngModel)]="libro.idioma"
+          name="idiomaInput" required #idiomaModel="ngModel"
+          [ngClass]="{'is-invalid': idiomaModel.invalid && idiomaModel.touched}">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <input class="form-control" type="date" [(ngModel)]="libro.fechaPublicacion"
+          name="fechaPublicacionInput" required #fechaModel="ngModel"
+          [ngClass]="{'is-invalid': fechaModel.invalid && fechaModel.touched}">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <input class="form-control" type="number" placeholder="N° Ejemplares" [(ngModel)]="libro.numEjemplares"
+          name="numEjemplaresInput" required #numModel="ngModel"
+          [ngClass]="{'is-invalid': numModel.invalid && numModel.touched}">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <input class="form-control" type="number" placeholder="Precio" [(ngModel)]="libro.precio"
+          name="precioInput" required #precioModel="ngModel"
+          [ngClass]="{'is-invalid': precioModel.invalid && precioModel.touched}">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <select class="form-select" name="autorSelect" [(ngModel)]="libro.autor" [compareWith]="compareAutores" required>
+          <option [ngValue]="null" disabled selected>Seleccione Autor</option>
+          <option *ngFor="let a of autores" [ngValue]="a">
+            {{ nombreCompletoAutor(a) }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <select class="form-select" name="categoriaSelect" [(ngModel)]="libro.categoria" [compareWith]="compareCategorias" required>
+          <option [ngValue]="null" disabled selected>Seleccione Categoría</option>
+          <option *ngFor="let c of categorias" [ngValue]="c">
+            {{ c.categoria }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <input type="file" class="form-control" (change)="onFileSelected($event)">
+      </div>
+
+      <div class="col-md-6 mb-2 d-flex gap-2">
+        <button type="button" class="btn btn-outline-primary" (click)="subirImagen()">Subir Imagen</button>
+        <img *ngIf="imagenPrevia" [src]="imagenPrevia" style="height: 40px; border-radius: 6px;">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary me-2" [disabled]="formLibro.invalid">
+      <mat-icon>{{ editar ? 'edit' : 'add' }}</mat-icon>
+      {{ editar ? 'Actualizar' : 'Agregar' }}
+    </button>
+
+    <button type="button" class="btn btn-secondary" *ngIf="editar" (click)="editarLibroCancelar(formLibro)">
+      <mat-icon>close</mat-icon>
+      Cancelar
+    </button>
+  </form>
+
+  <hr class="my-4" />
+
+  <h3>Lista de Libros</h3>
 
   <mat-form-field appearance="fill" class="w-100">
-      <mat-label>Buscar</mat-label>
-      <input matInput (keyup)="filtroLibro($event)" placeholder="Buscar Libro...">
+    <mat-label>Buscar</mat-label>
+    <input matInput (keyup)="filtroLibro($event)" placeholder="Buscar Libro">
   </mat-form-field>
 
   <div class="table-responsive">
-      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-100">
-          <ng-container matColumnDef="detalles">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let libro">
-              <button mat-icon-button color="primary" (click)="abrirModalDetalles(libro)">
-                <mat-icon>visibility</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="idLibro">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-            <td mat-cell *matCellDef="let l">{{ l.idLibro }}</td>
-          </ng-container>
-          <ng-container matColumnDef="titulo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Titulo</th>
-            <td mat-cell *matCellDef="let l">{{ l.titulo }}</td>
-          </ng-container>
-          <ng-container matColumnDef="editorial">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Editorial</th>
-                <td mat-cell *matCellDef="let l">{{ l.editorial }}</td>
-            </ng-container>
-            <ng-container matColumnDef="edicion">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Edicion</th>
-                <td mat-cell *matCellDef="let l">{{ l.edicion }}</td>
-            </ng-container>
-            <ng-container matColumnDef="idioma">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Idioma</th>
-                <td mat-cell *matCellDef="let l">{{ l.idioma }}</td>
-            </ng-container>
-            <ng-container matColumnDef="fechaPublicacion">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Publicacion</th>
-                <td mat-cell *matCellDef="let l">{{ l.fechaPublicacion | date: 'yyyy-MM-dd' }}</td>
-            </ng-container>
-            <ng-container matColumnDef="numEjemplares">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>N° de Ejemplares</th>
-                <td mat-cell *matCellDef="let l">{{ l.numEjemplares }}</td>
-            </ng-container>
-            <ng-container matColumnDef="precio">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
-                <td mat-cell *matCellDef="let l">{{ l.precio | currency }}</td>
-            </ng-container>
-             <ng-container matColumnDef="autor">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Autor</th>
-                <td mat-cell *matCellDef="let l">{{ nombreCompletoAutor(l.autor) }}</td>
-            </ng-container>
-            <ng-container matColumnDef="categoria">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Categoria</th>
-                <td mat-cell *matCellDef="let l">{{ l.categoria?.categoria }}</td>
-            </ng-container>
-            <ng-container matColumnDef="acciones">
-                <th mat-header-cell *matHeaderCellDef>Acciones</th>
-                <td mat-cell *matCellDef="let l">
-                  <div class="d-flex gap-1">
-                    <button class="btn btn-warning btn-sm me-1" (click)="abrirModal(l)">
-                      <mat-icon>edit</mat-icon>
-                    </button>
-                    <button class="btn btn-warning btn-sm" (click)="libro = l; delete()">
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </div>
-                </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="mostrarColumnas"></tr>
-            <tr mat-row *matRowDef="let row; columns: mostrarColumnas;"></tr>
-      </table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-100">
+
+      <ng-container matColumnDef="idLibro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let l">{{ l.idLibro }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="titulo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Título</th>
+        <td mat-cell *matCellDef="let l">{{ l.titulo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="editorial">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Editorial</th>
+        <td mat-cell *matCellDef="let l">{{ l.editorial }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="idioma">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Idioma</th>
+        <td mat-cell *matCellDef="let l">{{ l.idioma }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="precio">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
+        <td mat-cell *matCellDef="let l">{{ l.precio }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="autor">
+        <th mat-header-cell *matHeaderCellDef>Autor</th>
+        <td mat-cell *matCellDef="let l">{{ l.autor?.nombre }} {{ l.autor?.apellido }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="categoria">
+        <th mat-header-cell *matHeaderCellDef>Categoría</th>
+        <td mat-cell *matCellDef="let l">{{ l.categoria?.categoria }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let l">
+          <div class="d-flex gap-1">
+            <button class="btn btn-warning btn-sm me-1" (click)="editarLibro(l)">
+              <mat-icon class="me-1">edit</mat-icon>
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="libro = l; delete()">
+              <mat-icon class="me-1">delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="mostrarColumnas"></tr>
+      <tr mat-row *matRowDef="let row; columns: mostrarColumnas;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
   </div>
-
-
-
 </div>
