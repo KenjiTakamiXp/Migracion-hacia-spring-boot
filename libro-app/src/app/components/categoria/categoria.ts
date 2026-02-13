@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Categoria } from '../../model/categoria.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -7,13 +7,14 @@ import { CategoriaService } from '../../services/categoria';
 import Swal from 'sweetalert2';
 import { NgForm } from '@angular/forms';
 
+
 @Component({
   selector: 'app-categoria',
   standalone: false,
   templateUrl: './categoria.html',
   styleUrl: './categoria.css',
 })
-export class CategoriaComponent implements OnInit {
+export class CategoriaComponent implements OnInit, AfterViewInit {
 
 
   @ViewChild('formularioCategoria') formularioCategoria!: ElementRef;
@@ -34,15 +35,24 @@ export class CategoriaComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
 
+  ngAfterViewInit(): void {
+  if (this.dataSource) {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+}
+
   findAll(): void {
-    this.categoriaService.findAll().subscribe(data => {
-      //this.categorias = data;
-      console.log('Categorias recibidas:', data);
-      this.dataSource = new MatTableDataSource(data);
+  this.categoriaService.findAll().subscribe(data => {
+    this.dataSource = new MatTableDataSource(data);
+
+    setTimeout(() => {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
-  }
+  });
+}
+
 
   save(): void {
     this.categoriaService.save(this.categoria).subscribe(() => {
@@ -63,7 +73,7 @@ export class CategoriaComponent implements OnInit {
   }
 
   delete(): void {
-    
+
     Swal.fire({
       title: '¿Desea eliminar el dato?',
       text: 'Esta acción no se puede deshacer',
@@ -115,9 +125,12 @@ export class CategoriaComponent implements OnInit {
     }
   }
 
-  filtro(event: Event){
-    const filtro1 =  (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filtro1.trim().toLocaleLowerCase();
-  }
+ filtro(event: Event): void {
+  const filtro1 = (event.target as HTMLInputElement).value;
+  this.dataSource.filter = filtro1.trim().toLocaleLowerCase();
 
+  if (this.dataSource.paginator) {
+    this.dataSource.paginator.firstPage();
+  }
+}
 }

@@ -1,1 +1,14 @@
-<app-cliente></app-cliente>
+<mat-toolbar color="primary">
+  <span style="font-weight: 600;">Proyecto Librería</span>
+
+  <span style="flex: 1 1 auto;"></span>
+
+  <button mat-button routerLink="/libros" routerLinkActive="active-link">Libros</button>
+  <button mat-button routerLink="/autores" routerLinkActive="active-link">Autores</button>
+  <button mat-button routerLink="/categorias" routerLinkActive="active-link">Categorías</button>
+  <button mat-button routerLink="/clientes" routerLinkActive="active-link">Clientes</button>
+</mat-toolbar>
+
+<div style="padding: 16px;">
+  <router-outlet></router-outlet>
+</div>
