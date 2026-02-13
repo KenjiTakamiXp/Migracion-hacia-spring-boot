@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Autor } from '../components/autor/autor';
+import { Autor } from '../model/autor.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AutorService {
-  
+
   private baseUrl = "http://localhost:8080/api/autores"
 
-  constructor(private http: HttpClient){  } 
+  constructor(private http: HttpClient){  }
 
   findAll(): Observable<Autor[]>{
     return this.http.get<Autor[]>(this.baseUrl);
@@ -26,7 +26,7 @@ export class AutorService {
 
   update(id: number, cliente: Autor): Observable<Autor>{
     return this.http.put<Autor>(`${this.baseUrl}/${id}`, cliente);
-  }  
+  }
 
   delete(id: number): Observable<void>{
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
