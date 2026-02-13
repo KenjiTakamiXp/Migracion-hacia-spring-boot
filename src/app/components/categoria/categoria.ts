@@ -1,42 +1,43 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Cliente } from '../../model/cliente.model';
+import { Categoria } from '../../model/categoria.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { ClienteService } from '../../services/cliente';
+import { MatTableDataSource } from '@angular/material/table';
+import { CategoriaService } from '../../services/categoria';
 import Swal from 'sweetalert2';
 import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'app-cliente',
+  selector: 'app-categoria',
   standalone: false,
-  templateUrl: './cliente.html',
-  styleUrl: './cliente.css',
+  templateUrl: './categoria.html',
+  styleUrl: './categoria.css',
 })
-export class ClienteComponent implements OnInit {
+export class CategoriaComponent implements OnInit {
 
-  @ViewChild('formularioCliente') formularioCliente!: ElementRef;
+
+  @ViewChild('formularioCategoria') formularioCategoria!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  clientes: Cliente[] = [];
-  cliente: Cliente = {} as Cliente;
+  categorias: Categoria[] = [];
+  categoria: Categoria = {} as Categoria;
   editar: boolean = false;
   idEditar: number | null = null;
 
-  dataSource!: MatTableDataSource<Cliente>;
-  mostrarColumnas: String[] = ['idCliente', 'cedula', 'nombre', 'apellido', 'direccion', 'telefono', 'correo', 'acciones'];
+  dataSource!: MatTableDataSource<Categoria>;
+  mostrarColumnas: String[] = ['idCategoria', 'categoria', 'descripcion', 'acciones'];
 
-  constructor(private clienteService: ClienteService) { }
-
+  constructor(private categoriaService: CategoriaService) { }
 
   ngOnInit(): void {
-    this.findAll();
+    throw new Error('Method not implemented.');
   }
 
   findAll(): void {
-    this.clienteService.findAll().subscribe(data => {
-      //this.clientes = data;
+    this.categoriaService.findAll().subscribe(data => {
+      //this.categorias = data;
+      console.log('Categorias recibidas:', data);
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -44,16 +45,16 @@ export class ClienteComponent implements OnInit {
   }
 
   save(): void {
-    this.clienteService.save(this.cliente).subscribe(() => {
-      this.cliente = {} as Cliente;
+    this.categoriaService.save(this.categoria).subscribe(() => {
+      this.categoria = {} as Categoria;
       this.findAll();
     });
   }
 
   update(): void {
     if (this.idEditar !== null) {
-      this.clienteService.update(this.idEditar, this.cliente).subscribe(() => {
-        this.cliente = {} as Cliente;
+      this.categoriaService.update(this.idEditar, this.categoria).subscribe(() => {
+        this.categoria = {} as Categoria;
         this.editar = false;
         this.idEditar = null;
         this.findAll();
@@ -62,8 +63,7 @@ export class ClienteComponent implements OnInit {
   }
 
   delete(): void {
-    //this.clienteService.delete(this.cliente.idCliente).subscribe(() => {});
-
+    
     Swal.fire({
       title: '¿Desea eliminar el dato?',
       text: 'Esta acción no se puede deshacer',
@@ -75,31 +75,31 @@ export class ClienteComponent implements OnInit {
       cancelButtonColor: '#3085d6'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.clienteService.delete(this.cliente.idCliente).subscribe(() => {
+        this.categoriaService.delete(this.categoria.idCategoria).subscribe(() => {
           this.findAll();
-          this.cliente = {} as Cliente;
-          Swal.fire('Eliminado', 'El cliente ha sido eliminado', 'success');
+          this.categoria = {} as Categoria;
+          Swal.fire('Eliminado', 'La categoria ha sido eliminado', 'success');
         });
       } else {
-        this.cliente = {} as Cliente;
+        this.categoria = {} as Categoria;
       }
     });
 
   }
 
   //Intercción con la pagina web
-  editarCliente(cliente: Cliente): void {
-    this.cliente = { ...cliente };
-    this.idEditar = cliente.idCliente;
+  editarCategoria(categoria: Categoria): void {
+    this.categoria = { ...categoria };
+    this.idEditar = categoria.idCategoria;
     this.editar = true;
 
     setTimeout(() => {
-      this.formularioCliente.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      this.formularioCategoria.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
   }
 
-  editarClienteCancelar(from: NgForm): void{
-    this.cliente = { } as Cliente;
+  editarCategoriaCancelar(from: NgForm): void{
+    this.categoria = { } as Categoria;
     this.idEditar =  null;
     this.editar = false;
     from.resetForm;
@@ -119,7 +119,5 @@ export class ClienteComponent implements OnInit {
     const filtro1 =  (event.target as HTMLInputElement).value;
     this.dataSource.filter = filtro1.trim().toLocaleLowerCase();
   }
-
-
 
 }
