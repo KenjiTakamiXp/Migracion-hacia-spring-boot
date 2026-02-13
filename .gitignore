@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # Compiled output
@@ -42,3 +43,55 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+=======
+#######################################
+# Ignorar archivos comunes del sistema
+#######################################
+.DS_Store
+Thumbs.db
+
+#######################################
+# Ignorar configuración de IntelliJ IDEA
+#######################################
+.idea/
+*.iml
+
+#######################################
+# Ignorar archivos generados por Gradle
+#######################################
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+out/
+logs/
+*.log
+
+#######################################
+# Ignorar configuración local de VSCode
+#######################################
+.vscode/
+
+#######################################
+# Ignorar dependencias y builds de Angular
+#######################################
+libro-app/node_modules/
+libro-app/dist/
+libro-app/.angular/
+libro-app/.vscode/
+
+#######################################
+# Ignorar archivos temporales y de entorno
+#######################################
+*.env
+*.local
+*.bak
+*.swp
+*.tmp
+
+#######################################
+# Otros IDEs o herramientas (si usas)
+#######################################
+*.classpath
+*.project
+*.settings/
+>>>>>>> 9ce92bd12161a60ddb99726b0ae7e72f48e9b76e
