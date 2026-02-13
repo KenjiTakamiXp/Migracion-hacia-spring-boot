@@ -1,43 +1,37 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { ClienteComponent } from './components/cliente/cliente';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
+
+import { ClienteListComponent } from './pages/cliente/cliente-list.component';
+import { ClienteFormComponent } from './pages/cliente/cliente-form.component';
+import { AutorListComponent } from './pages/autor/autor-list.component';
+import { AutorFormComponent } from './pages/autor/autor-form.component';
+import { CategoriaListComponent } from './pages/categoria/categoria-list.component';
+import { CategoriaFormComponent } from './pages/categoria/categoria-form.component';
 
 @NgModule({
   declarations: [
     App,
-    ClienteComponent
+    ClienteListComponent,
+    ClienteFormComponent,
+    AutorListComponent,
+    AutorFormComponent,
+    CategoriaListComponent,
+    CategoriaFormComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatButtonModule
-
+    ReactiveFormsModule,
+    AppRoutingModule
   ],
   providers: [
-    provideBrowserGlobalErrorListeners(),
+    provideBrowserGlobalErrorListeners()
   ],
   bootstrap: [App]
 })
-export class AppModule { }
+export class AppModule {}

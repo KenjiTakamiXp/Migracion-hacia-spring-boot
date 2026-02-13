@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="m-0">{{ titulo }}</h2>
+  <button class="btn btn-outline-secondary" (click)="cancelar()">Volver</button>
+</div>
+
+<div *ngIf="cargando" class="alert alert-info">Procesando...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+<form [formGroup]="form" (ngSubmit)="guardar()" class="card p-3" *ngIf="!cargando">
+  <div class="row g-3">
+    <div class="col-md-4">
+      <label class="form-label">Cédula *</label>
+      <input class="form-control" formControlName="cedula" />
+      <small class="text-danger" *ngIf="form.controls.cedula.touched && form.controls.cedula.invalid">Requerido</small>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label">Nombre *</label>
+      <input class="form-control" formControlName="nombre" />
+      <small class="text-danger" *ngIf="form.controls.nombre.touched && form.controls.nombre.invalid">Requerido</small>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label">Apellido *</label>
+      <input class="form-control" formControlName="apellido" />
+      <small class="text-danger" *ngIf="form.controls.apellido.touched && form.controls.apellido.invalid">Requerido</small>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Dirección</label>
+      <input class="form-control" formControlName="direccion" />
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Teléfono</label>
+      <input class="form-control" formControlName="telefono" />
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Correo</label>
+      <input class="form-control" formControlName="correo" />
+      <small class="text-danger" *ngIf="form.controls.correo.touched && form.controls.correo.invalid">Email inválido</small>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-3">
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-outline-secondary" type="button" (click)="cancelar()">Cancelar</button>
+  </div>
+</form>

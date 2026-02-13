@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="m-0">Clientes</h2>
+  <button class="btn btn-primary" (click)="nuevo()">Nuevo cliente</button>
+</div>
+
+<div *ngIf="cargando" class="alert alert-info">Cargando...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+<div class="table-responsive" *ngIf="!cargando">
+  <table class="table table-striped table-hover align-middle">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cédula</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Teléfono</th>
+        <th>Correo</th>
+        <th style="width: 160px;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of clientes">
+        <td>{{ c.idCliente }}</td>
+        <td>{{ c.cedula }}</td>
+        <td>{{ c.nombre }}</td>
+        <td>{{ c.apellido }}</td>
+        <td>{{ c.telefono }}</td>
+        <td>{{ c.correo }}</td>
+        <td>
+          <button class="btn btn-sm btn-outline-secondary me-2" (click)="editar(c.idCliente)">Editar</button>
+          <button class="btn btn-sm btn-outline-danger" (click)="eliminar(c.idCliente)">Eliminar</button>
+        </td>
+      </tr>
+      <tr *ngIf="clientes.length === 0">
+        <td colspan="7" class="text-center text-muted">No hay registros.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
